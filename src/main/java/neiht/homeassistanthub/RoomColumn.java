@@ -6,6 +6,10 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 
+import java.io.IOException;
+import java.net.http.HttpHeaders;
+import java.net.http.HttpResponse;
+
 public class RoomColumn extends VBox{
     private final String name;
     private final ObservableList<DeviceCell> deviceCells;
@@ -14,6 +18,18 @@ public class RoomColumn extends VBox{
         this.name = name;
         this.deviceCells = deviceCells;
 
+        HelloController controller = new HelloController();
+        try {
+            String endpoint = "api/";
+            HttpResponse<String> response = controller.httpRequest("GET", endpoint);
+            HttpHeaders headers = response.headers();
+            headers.map().forEach((k, v) -> System.out.println(k + ':' + v));
+
+            System.out.println(response.statusCode());
+            System.out.println(response.body());
+        } catch (IOException | InterruptedException e) {
+            throw new RuntimeException(e);
+        }
         initGraphics();
     }
 

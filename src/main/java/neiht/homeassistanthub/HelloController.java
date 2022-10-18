@@ -13,7 +13,8 @@ import java.time.Duration;
 
 public class HelloController {
 
-    private static final String BASE_URI = "192.168.178.69:8123";
+    private static final String BASE_URI = "http://192.168.178.69:8123/";
+    private static final String TOKEN = "";
     private static final HttpClient client = HttpClient.newBuilder()
             .version(HttpClient.Version.HTTP_1_1)
             .connectTimeout(Duration.ofSeconds(10))
@@ -26,32 +27,26 @@ public class HelloController {
         welcomeText.setText("Welcome to JavaFX Application!");
     }
 
-    private static HttpRequest getRequest() {
+    private static HttpRequest getRequest(String endpoint) {
         return HttpRequest.newBuilder()
                 .GET()
                 .uri(URI.create(BASE_URI))
-                .setHeader("User-Agent", "Java 11 HttplClient Bot")
+                .setHeader("Authorization", "Bearer " + TOKEN)
                 .build();
     }
 
-    private static void httpRequest(String type) throws IOException, InterruptedException {
+    public HttpResponse<String> httpRequest(String type, String endpoint) throws IOException, InterruptedException {
         HttpRequest request;
         switch (type) {
             case "GET":
-                request = getRequest();
+                request = getRequest(endpoint);
                 break;
             default:
-                request = getRequest();
+                request = getRequest(endpoint);
                 break;
         }
 
-        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-
-        HttpHeaders headers = response.headers();
-        headers.map().forEach((k, v) -> System.out.println(k + ':' + v));
-
-        System.out.println(response.statusCode());
-        System.out.println(response.body());
+        return client.send(request, HttpResponse.BodyHandlers.ofString());
     }
 
 }
