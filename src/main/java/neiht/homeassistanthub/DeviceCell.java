@@ -10,11 +10,11 @@ public class DeviceCell extends HBox {
     private final String entityId;
     private final String name;
     private final String type;
-    private final HelloController controller;
+    private final DashboardController controller;
     private boolean isOn;
     private ToggleSwitch toggleSwitch;
 
-    public DeviceCell(String entityId, String name, Boolean isOn, String type, HelloController controller) {
+    public DeviceCell(String entityId, String name, Boolean isOn, String type, DashboardController controller) {
         this.entityId = entityId;
         this.name = name;
         this.isOn = isOn;

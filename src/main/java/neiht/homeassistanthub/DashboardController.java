@@ -14,7 +14,7 @@ import java.util.Map;
 
 import com.google.gson.Gson;
 
-public class HelloController {
+public class DashboardController {
 
     private static final String BASE_URI = "http://192.168.178.69:8123/";
     private static final String TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhOWE1ZDY5M2NjNTA0MjcxODM0YjcxMDQxM2E2NTc4NSIsImlhdCI6MTY2NjEyNTQxMSwiZXhwIjoxOTgxNDg1NDExfQ.xy3xy_ti4TSJgtahbFeRRkhJnsBVuVwH7pnROfPSSsE";
@@ -22,13 +22,6 @@ public class HelloController {
             .version(HttpClient.Version.HTTP_1_1)
             .connectTimeout(Duration.ofSeconds(10))
             .build();
-    @FXML
-    private Label welcomeText;
-
-    @FXML
-    protected void onHelloButtonClick() {
-        welcomeText.setText("Welcome to JavaFX Application!");
-    }
 
     private static HttpRequest getRequest(String endpoint) {
         return HttpRequest.newBuilder()

@@ -15,12 +15,12 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-public class HelloApplication extends Application {
+public class Dashboard extends Application {
     private static final int COLSPAN = 1;
     private static final int ROWSPAN = 1;
     private static final int NUMCOLS = 3;
     private static final int PADDING = 5;
-    private static final HelloController controller = new HelloController();
+    private static final DashboardController controller = new DashboardController();
     private static final List<String> STATES = Arrays.asList("on", "off");
     private static final List<String> VALID = Arrays.asList("switch", "light");
 
