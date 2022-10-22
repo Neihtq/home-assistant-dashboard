@@ -4,16 +4,22 @@ import javafx.geometry.Pos;
 import javafx.scene.layout.HBox;
 import org.controlsfx.control.ToggleSwitch;
 
+import java.io.IOException;
+
 public class DeviceCell extends HBox {
     private final String entityId;
     private final String name;
+    private final String type;
+    private final HelloController controller;
     private boolean isOn;
     private ToggleSwitch toggleSwitch;
 
-    public DeviceCell(String entityId, String name, Boolean isOn) {
+    public DeviceCell(String entityId, String name, Boolean isOn, String type, HelloController controller) {
         this.entityId = entityId;
         this.name = name;
         this.isOn = isOn;
+        this.controller = controller;
+        this.type = type;
 
         initGraphics();
         registerListeners();
@@ -32,14 +38,26 @@ public class DeviceCell extends HBox {
     }
 
     private void registerListeners() {
-        toggleSwitch.setOnMouseClicked(e -> handleDevicePropertyChanged());
+        toggleSwitch.setOnMouseClicked(e -> changeState());
     }
 
-    private void handleDevicePropertyChanged() {
+    public void changeState() {
+        String newState = isOn ? "off" : "on";
+        String response = "";
+        String body = "{\"entity_id\":\"" + entityId + "\"}";
+        try {
+            response = controller.httpRequest("api/services/" + type + "/turn_" + newState, body);
+        } catch (IOException | InterruptedException e) {
+            System.err.println(e);
+        }
+
+        if (!response.equals("[]")) {
+            System.err.println("Change state of " + entityId + " FAILED. Log: ");
+            System.err.println(response);
+            return;
+        }
+
         this.isOn = !isOn;
         toggleSwitch.setSelected(isOn);
-
-        String log = String.format("%s .%s is on: %b", name, entityId, isOn);
-        System.out.println(log);
     }
 }
